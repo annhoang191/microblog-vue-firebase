@@ -7,13 +7,13 @@
     </transition>
     <section>
       <div class="col1">
-        <h1>Vuegram</h1>
-        <p>Welcome to the <a href="https://savvyapps.com/" target="_blank">Savvy Apps</a> sample social media web app powered by Vue.js and Firebase.
+        <h1>Vuegram example</h1>
+        <p>A sample social media web app powered by Vue.js and Firebase.
           Build this project by checking out The Definitive Guide to Getting Started with Vue.js
         </p>
       </div>
-      <div class="col2" v-bind:class="{'signup-form': !showLoginForm && !showForgotPassword}">
-        <form v-if="showLoginForm" v-on:submit.prevent>
+      <div class="col2" :class="{'signup-form': !showLoginForm && !showForgotPassword}">
+        <form v-if="showLoginForm" @submit.prevent>
           <h1>Welcome Back</h1>
           <label for="email1">Email</label>
           <input v-model.trim="loginForm.email"
@@ -21,21 +21,21 @@
           <label for="password1">Password</label>
           <input v-model.trim="loginForm.password"
             type="password" placeholder="******" id="password1" />
-          <button v-on:click="login" class="button">Log In</button>
+          <button @click="login" class="button">Log In</button>
           <div class="extras">
-            <a v-on:click="togglePasswordReset">Forgot Password</a>
-            <a v-on:click="toggleForm">Create an Account</a>
+            <a @click="togglePasswordReset">Forgot Password</a>
+            <a @click="toggleForm">Create an Account</a>
           </div>
         </form>
 
-        <form v-if="!showLoginForm  && !showForgotPassword" v-on:submit.prevent>
+        <form v-if="!showLoginForm  && !showForgotPassword" @submit.prevent>
           <h1>Get started</h1>
 
           <label for="name">Name</label>
-          <input v-model.trim="signupForm.name" type="text" placeholder="Savvy Apps" id="name" />
+          <input v-model.trim="signupForm.name" type="text" placeholder="Your name" id="name" />
 
           <label for="title">Title</label>
-          <input v-model.trim="signupForm.title" type="text" placeholder="Company" id="title" />
+          <input v-model.trim="signupForm.title" type="text" placeholder="Your company" id="title" />
 
           <label for="email2">Email</label>
           <input v-model.trim="signupForm.email" type="text" placeholder="you@email.com" id="email2" />
@@ -46,11 +46,11 @@
           <button @click="signup" class="button">Sign Up</button>
 
           <div class="extras">
-            <a v-on:click="toggleForm">Back to Log In</a>
+            <a @click="toggleForm">Back to Log In</a>
           </div>
         </form>
 
-        <form v-if="showForgotPassword" v-on:submit.prevent class="password-reset">
+        <form v-if="showForgotPassword" @submit.prevent class="password-reset">
           <div v-if="!passwordResetSuccess">
             <h1>Reset Password</h1>
             <p>Will send you an email to reset password</p>
@@ -59,15 +59,15 @@
             <input v-model.trim="passwordForm.email"
               type="text" placeholder="youremail@example.com" id="email3">
 
-            <button v-on:click="resetPassword" class="button">Submit</button>
+            <button @click="resetPassword" class="button">Submit</button>
             <div class="extras">
-              <a v-on:click="togglePasswordReset">Back to login</a>
+              <a @click="togglePasswordReset">Back to login</a>
             </div>
           </div>
           <div v-else >
             <h1>Email sent</h1>
             <p>Please check your email</p>
-            <button v-on:click="togglePasswordReset">Back to login</button>
+            <button @click="togglePasswordReset">Back to login</button>
           </div>
         </form>
         <transition name="fade">

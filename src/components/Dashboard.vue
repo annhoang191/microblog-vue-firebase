@@ -6,16 +6,16 @@
         <p>{{userProfile.title}}</p>
         <div class="create-post">
           <p>Create a post</p>
-          <form v-on:submit.prevent>
+          <form @submit.prevent>
             <textarea v-model.trim="post.content"></textarea>
             <button class="button"
-              v-on:click="createPost" v-bind:disabled="post.content===''">Post</button>
+              @click="createPost" :disabled="post.content===''">Post</button>
           </form>
         </div>
       </div>
       <div class="col2">
         <transition name="fade">
-          <div v-if="hiddenPosts.length" v-on:click="showNewPosts" class="hidden-posts">
+          <div v-if="hiddenPosts.length" @click="showNewPosts" class="hidden-posts">
             <p>Click to show <span class="new-posts">{{hiddenPosts.length}}</span>
               new <span v-if="hiddenPosts.length > 1">posts</span><span v-else>post</span>
             </p>
@@ -27,20 +27,20 @@
             <span>{{post.createdOn | formatDate}}</span>
             <p>{{post.content | trimLength}}</p>
             <ul>
-              <li><a v-on:click="openCommentModal(post)">comments {{post.comments}}</a></li>
-              <li><a v-on:click="likePost(post.id, post.likes)">likes {{post.likes}} </a></li>
-              <li><a v-on:click="viewPost(post)">view full post</a></li>
+              <li><a @click="openCommentModal(post)">comments {{post.comments}}</a></li>
+              <li><a @click="likePost(post.id, post.likes)">likes {{post.likes}} </a></li>
+              <li><a @click="viewPost(post)">view full post</a></li>
             </ul>
             <transition name="fade">
               <div v-if="showCommentModal" class="c-modal">
                 <div class="c-container">
-                  <a v-on:click="closeCommentModal">X</a>
+                  <a @click="closeCommentModal">X</a>
                   <p>Add a comment</p>
-                  <form v-on:submit.prevent>
+                  <form @submit.prevent>
                     <textarea v-model.trim="comment.content">
                     </textarea>
-                    <button v-on:click="addComment"
-                      v-bind:disabled="comment.content===''" class="button">Add comment</button>
+                    <button @click="addComment"
+                      :disabled="comment.content===''" class="button">Add comment</button>
                   </form>
                 </div>
               </div>
@@ -48,7 +48,7 @@
             <transition name="fade">
               <div v-if="showPostModal" class="p-modal">
                 <div class="p-container">
-                  <a v-on:click="closePostModal" class="close">X</a>
+                  <a @click="closePostModal" class="close">X</a>
                   <div class="post">
                     <h5>{{fullPost.userName}}</h5>
                     <span>{{fullPost.createdOn | formatDate}}</span>

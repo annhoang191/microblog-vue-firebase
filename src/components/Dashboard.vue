@@ -27,10 +27,24 @@
             <span>{{post.createdOn | formatDate}}</span>
             <p>{{post.content | trimLength}}</p>
             <ul>
-              <li><a>comments {{post.comments}}</a></li>
+              <li><a v-on:click="openCommentModal(post)">comments {{post.comments}}</a></li>
               <li><a>likes {{post.likes}} </a></li>
               <li><a>view full post</a></li>
             </ul>
+            <transition name="fade">
+              <div v-if="showCommentModal" class="c-modal">
+                <div class="c-container">
+                  <a v-on:click="closeCommentModal">X</a>
+                  <p>Add a comment</p>
+                  <form v-on:submit.prevent>
+                    <textarea v-model.trim="comment.content">
+                    </textarea>
+                    <button v-on:click="addComment"
+                      v-bind:disabled="comment.content===''" class="button">Add comment</button>
+                  </form>
+                </div>
+              </div>
+            </transition>
           </div>
         </div>
         <div v-else>
@@ -61,7 +75,8 @@ export default {
       likes: {
         postId: '',
         userId: ''
-      }
+      },
+      showCommentModal: false
     }
   },
 
@@ -84,10 +99,41 @@ export default {
         console.log(err)
       })
     },
-    showNewPosts()  {
+    showNewPosts() {
       let updatedPostArray = this.hiddenPosts.concat(this.posts)
       this.$store.commit('setHiddenPosts', null)
       this.$store.commit('setPosts', updatedPostArray)
+    },
+    openCommentModal(post) {
+      this.showCommentModal = true,
+      this.comment.postId = post.id,
+      this.comment.userId = post.userId,
+      this.comment.postComments = post.comments
+    },
+    closeCommentModal() {
+      this.showCommentModal = false,
+      this.comment.postId = '',
+      this.comment.userId = '',
+      this.comment.postComments = ''
+    },
+    addComment() {
+      let postComments = this.comment.postComments
+
+      fb.commentsCollection.add({
+        createdOn: new Date(),
+        content: this.comment.content,
+        userId: this.currentUser.uid,
+        postId: this.comment.postId,
+        userName: this.userProfile.name
+      }).then(doc => {
+        fb.postsCollection.doc(this.comment.postId).update({
+          comments: postComments + 1
+        }).then(() => {
+          this.closeCommentModal()
+        })
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
 

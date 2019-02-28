@@ -8,9 +8,9 @@
       </transition>
       <form @submit.prevent>
         <label for="name">Name</label>
-        <input v-model.trim="name" type="text" v-bind:placeholder="userProfile.name" id="name" />
+        <input v-model.trim="name" type="text" :placeholder="userProfile.name" id="name" />
         <label for="title">Job Title</label>
-        <input v-model.trim="title" type="text" v-bind:placeholder="userProfile.title" id="title" />
+        <input v-model.trim="title" type="text" :placeholder="userProfile.title" id="title" />
         <button @click="updateProfile" class="button">Update Profile</button>
       </form>
     </div>

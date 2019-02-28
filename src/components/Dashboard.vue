@@ -28,7 +28,7 @@
             <p>{{post.content | trimLength}}</p>
             <ul>
               <li><a v-on:click="openCommentModal(post)">comments {{post.comments}}</a></li>
-              <li><a>likes {{post.likes}} </a></li>
+              <li><a v-on:click="likePost(post.id, post.likes)">likes {{post.likes}} </a></li>
               <li><a>view full post</a></li>
             </ul>
             <transition name="fade">
@@ -130,6 +130,24 @@ export default {
           comments: postComments + 1
         }).then(() => {
           this.closeCommentModal()
+        })
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    likePost(postId, postLikes) {
+      let docId = `${this.currentUser.uid}_${postId}`
+
+      fb.likesCollection.doc(docId).get().then(doc => {
+        if (doc.exists) {return}
+
+        fb.likesCollection.doc(docId).set({
+          postId: postId,
+          userId: this.currentUser.uid
+        }).then(() => {
+          fb.postsCollection.doc(postId).update({
+              likes: postLikes + 1
+          })
         })
       }).catch(err => {
         console.log(err)
